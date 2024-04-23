@@ -1,11 +1,17 @@
 const express = require('express');
+const connect = require('./db');  // Import your database connection
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+connect().then(client => {
+  const collection = client.db("test").collection("devices");
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  app.get('/', async (req, res) => {
+    const documents = await collection.find({}).toArray();
+    res.send(documents);
+  });
+
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
