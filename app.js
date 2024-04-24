@@ -2,6 +2,13 @@ const express = require('express');
 const connect = require('./db');  // Import your database connection
 const app = express();
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./swaggerDef');
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+// const deviceRoutes = require('./routes/deviceRoutes');
+// app.use('/api', deviceRoutes);
+
 connect().then(client => {
     const collection = client.db("test").collection("devices");
 
