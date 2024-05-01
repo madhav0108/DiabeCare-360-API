@@ -5,6 +5,20 @@ const app = express();
 const helmet = require('helmet');
 app.use(helmet());
 
+// Core functionality routes
+const glucoseRoutes = require('./routes/glucoseRoutes');
+app.use('/api/glucose', glucoseRoutes);
+
+const medicationRoutes = require('./routes/medicationRoutes');
+app.use('/api/medication', medicationRoutes);
+
+const dietaryRoutes = require('./routes/dietaryRoutes');
+app.use('/api/dietary', dietaryRoutes);
+
+const activityRoutes = require('./routes/activityRoutes');
+app.use('/api/activity', activityRoutes);
+
+// Swagger UI for API documentation
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDef');
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
