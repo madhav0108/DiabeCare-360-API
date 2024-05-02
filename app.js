@@ -2,6 +2,9 @@ const express = require('express');
 const connect = require('./db');  // Import your database connection
 const app = express();
 
+// Middleware to parse JSON
+app.use(express.json());
+
 const helmet = require('helmet');
 app.use(helmet());
 
@@ -25,6 +28,11 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // const deviceRoutes = require('./routes/deviceRoutes');
 // app.use('/api', deviceRoutes);
+
+// Basic error handling
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page not found</h1>');
+});
 
 connect().then(client => {
     const collection = client.db("test").collection("devices");
