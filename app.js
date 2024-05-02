@@ -8,6 +8,9 @@ app.use(express.json());
 const helmet = require('helmet');
 app.use(helmet());
 
+// const cors = require('cors');
+// app.use(cors());
+
 // Core functionality routes
 const glucoseRoutes = require('./routes/glucoseRoutes');
 app.use('/api/glucose', glucoseRoutes);

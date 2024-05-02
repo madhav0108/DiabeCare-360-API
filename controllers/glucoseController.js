@@ -18,7 +18,7 @@ exports.createGlucose = async (req, res) => {
 exports.getAllGlucose = async (req, res) => {
     try {
         const glucoseData = await Glucose.find();
-        res.status(200).json(glucoseData);
+        res.status(200).json([glucoseData]);
     } catch (error) {
         res.status(400).json({ message: "Failed to get glucose data", error: error.message });
     }
@@ -28,7 +28,7 @@ exports.getGlucoseById = async (req, res) => {
     try {
         const glucose = await Glucose.findOne({ id: req.params.id });
         if (glucose) {
-            res.status(200).json(glucose);
+            res.status(200).json([glucose]);
         } else {
             res.status(404).json({ message: "Glucose not found" });
         }
