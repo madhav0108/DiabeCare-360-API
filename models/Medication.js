@@ -9,4 +9,4 @@ const medicationSchema = new mongoose.Schema({
     completedIntakes: { type: Number, required: true }
 });
 
-module.exports = mongoose.model('Medication', medicationSchema);
+module.exports = mongoose.model('Medication', medicationSchema, 'medication');

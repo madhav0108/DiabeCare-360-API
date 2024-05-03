@@ -11,4 +11,4 @@ const dietarySchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Dietary', dietarySchema);
+module.exports = mongoose.model('Dietary', dietarySchema, 'dietary');

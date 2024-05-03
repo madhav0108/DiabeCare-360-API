@@ -7,4 +7,4 @@ const glucoseSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Glucose', glucoseSchema);
+module.exports = mongoose.model('Glucose', glucoseSchema, 'glucose');
