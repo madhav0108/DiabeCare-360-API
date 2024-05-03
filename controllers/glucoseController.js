@@ -9,7 +9,7 @@ exports.createGlucose = async (req, res) => {
             date: req.body.date
         });
         const savedGlucose = await glucose.save();
-        res.status(201).json(savedGlucose);
+        res.status(201).json([savedGlucose]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to create glucose data", error: error.message });
     }
@@ -18,7 +18,7 @@ exports.createGlucose = async (req, res) => {
 exports.getAllGlucose = async (req, res) => {
     try {
         const glucoseData = await Glucose.find();
-        res.status(200).json([glucoseData]);
+        res.status(200).json(glucoseData); // This will always be an array, even if it's empty
     } catch (error) {
         res.status(400).json({ message: "Failed to get glucose data", error: error.message });
     }
@@ -28,9 +28,9 @@ exports.getGlucoseById = async (req, res) => {
     try {
         const glucose = await Glucose.findOne({ id: req.params.id });
         if (glucose) {
-            res.status(200).json([glucose]);
+            res.status(200).json([glucose]); // Wrap in an array
         } else {
-            res.status(404).json({ message: "Glucose not found" });
+            res.status(404).json([]);
         }
     } catch (error) {
         res.status(400).json({ message: "Error finding glucose data", error: error.message });
@@ -44,7 +44,7 @@ exports.updateGlucose = async (req, res) => {
             { $set: req.body },
             { new: true }
         );
-        res.status(200).json(updatedGlucose);
+        res.status(200).json([updatedGlucose]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to update glucose data", error: error.message });
     }
@@ -53,7 +53,7 @@ exports.updateGlucose = async (req, res) => {
 exports.deleteGlucose = async (req, res) => {
     try {
         const deletedGlucose = await Glucose.findOneAndDelete({ id: req.params.id });
-        res.status(200).json(deletedGlucose);
+        res.status(200).json([deletedGlucose]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to delete glucose data", error: error.message });
     }
