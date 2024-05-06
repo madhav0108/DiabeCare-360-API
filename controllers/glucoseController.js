@@ -4,7 +4,7 @@ const Glucose = require('../models/Glucose');
 exports.createGlucose = async (req, res) => {
     try {
         const glucose = new Glucose({
-            id: new require('mongoose').Types.ObjectId(req.body.id), // If id needs to be MongoDB ObjectId
+            id: req.body.id,
             level: req.body.level,
             date: new Date(req.body.date)  // Ensure date is converted to Date object
         });
