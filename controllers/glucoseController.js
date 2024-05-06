@@ -20,7 +20,7 @@ exports.getAllGlucose = async (req, res) => {
         const glucoseData = await Glucose.find();
         const formattedData = glucoseData.map(g => ({
             level: g.level,
-            date: g.date.getTime()  // Convert date to milliseconds since the epoch
+            date: g.date.toISOString()  // Ensure date is in ISO 8601 string format
         }));
         res.status(200).json(glucoseData); // This will always be an array, even if it's empty
     } catch (error) {
