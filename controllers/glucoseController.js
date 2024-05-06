@@ -4,9 +4,9 @@ const Glucose = require('../models/Glucose');
 exports.createGlucose = async (req, res) => {
     try {
         const glucose = new Glucose({
-            id: req.body.id,
+            id: new require('mongoose').Types.ObjectId(req.body.id), // If id needs to be MongoDB ObjectId
             level: req.body.level,
-            date: req.body.date
+            date: new Date(req.body.date)  // Ensure date is converted to Date object
         });
         const savedGlucose = await glucose.save();
         res.status(201).json([savedGlucose]); // Wrap in an array
@@ -19,10 +19,11 @@ exports.getAllGlucose = async (req, res) => {
     try {
         const glucoseData = await Glucose.find();
         const formattedData = glucoseData.map(g => ({
+            id: g.id,  // Ensure to include all necessary fields
             level: g.level,
-            date: g.date.toISOString()  // Ensure date is in ISO 8601 string format
+            date: g.date.toISOString()
         }));
-        res.status(200).json(glucoseData); // This will always be an array, even if it's empty
+        res.status(200).json(formattedData);  // Send formatted data
     } catch (error) {
         res.status(400).json({ message: "Failed to get glucose data", error: error.message });
     }
@@ -45,7 +46,7 @@ exports.updateGlucose = async (req, res) => {
     try {
         const updatedGlucose = await Glucose.findOneAndUpdate(
             { id: req.params.id },
-            { $set: req.body },
+            { $set: { level: req.body.level, date: new Date(req.body.date) } },
             { new: true }
         );
         res.status(200).json([updatedGlucose]); // Wrap in an array
