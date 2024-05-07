@@ -11,7 +11,7 @@ exports.createMedication = async (req, res) => {
             completedIntakes: req.body.completedIntakes
         });
         const savedMedication = await medication.save();
-        res.status(201).json(savedMedication);
+        res.status(201).json([savedMedication]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to create medication data", error: error.message });
     }
@@ -30,7 +30,7 @@ exports.getMedicationById = async (req, res) => {
     try {
         const medication = await Medication.findOne({ id: req.params.id });
         if (medication) {
-            res.status(200).json(medication);
+            res.status(200).json([medication]); // Wrap in an array
         } else {
             res.status(404).json({ message: "Medication not found" });
         }
@@ -46,7 +46,7 @@ exports.updateMedication = async (req, res) => {
             { $set: req.body },
             { new: true }
         );
-        res.status(200).json(updatedMedication);
+        res.status(200).json([updatedMedication]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to update medication data", error: error.message });
     }
@@ -55,7 +55,7 @@ exports.updateMedication = async (req, res) => {
 exports.deleteMedication = async (req, res) => {
     try {
         const deletedMedication = await Medication.findOneAndDelete({ id: req.params.id });
-        res.status(200).json(deletedMedication);
+        res.status(200).json([deletedMedication]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to delete medication data", error: error.message });
     }
