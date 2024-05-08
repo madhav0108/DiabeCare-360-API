@@ -10,10 +10,10 @@ exports.createDietary = async (req, res) => {
             carbs: req.body.carbs,
             protein: req.body.protein,
             fat: req.body.fat,
-            date: req.body.date
+            date: new Date(req.body.date)  // Ensure date is converted to Date object
         });
         const savedDietary = await dietary.save();
-        res.status(201).json(savedDietary);
+        res.status(201).json([savedDietary]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to create dietary data", error: error.message });
     }
@@ -22,7 +22,16 @@ exports.createDietary = async (req, res) => {
 exports.getAllDietaryEntries = async (req, res) => {
     try {
         const dietaryEntries = await Dietary.find();
-        res.status(200).json(dietaryEntries);
+        const formattedData = dietaryEntries.map(g => ({
+          id: g.id,
+          name: g.name,
+          calories: g.calories,
+          carbs: g.carbs,
+          protein: g.protein,
+          fat: g.fat,
+          date: g.date.toISOString()
+        }))
+        res.status(200).json(formattedData);
     } catch (error) {
         res.status(400).json({ message: "Failed to get dietary data", error: error.message });
     }
@@ -32,7 +41,7 @@ exports.getDietaryById = async (req, res) => {
     try {
         const dietary = await Dietary.findOne({ id: req.params.id });
         if (dietary) {
-            res.status(200).json(dietary);
+            res.status(200).json([dietary]); // Wrap in an array
         } else {
             res.status(404).json({ message: "Dietary entry not found" });
         }
@@ -48,7 +57,7 @@ exports.updateDietary = async (req, res) => {
             { $set: req.body },
             { new: true }
         );
-        res.status(200).json(updatedDietary);
+        res.status(200).json([updatedDietary]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to update dietary data", error: error.message });
     }
@@ -57,7 +66,7 @@ exports.updateDietary = async (req, res) => {
 exports.deleteDietary = async (req, res) => {
     try {
         const deletedDietary = await Dietary.findOneAndDelete({ id: req.params.id });
-        res.status(200).json(deletedDietary);
+        res.status(200).json([deletedDietary]); // Wrap in an array
     } catch (error) {
         res.status(400).json({ message: "Failed to delete dietary data", error: error.message });
     }
