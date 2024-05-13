@@ -1,6 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const connect = require('./db');  // Import your database connection
 const app = express();
+
+// redirect HTTP traffic to HTTPS
+app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https' && process.env.NODE_ENV === 'production') {
+        res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+        next();
+    }
+});
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -10,6 +20,11 @@ app.use(helmet());
 
 // const cors = require('cors');
 // app.use(cors());
+
+const authenticateToken = require('./middleware/authenticateToken'); // Adjust path as necessary
+const userRoutes = require('./routes/userRoutes');
+// Apply the authentication middleware to all routes under /api/user
+app.use('/api/user', authenticateToken, userRoutes);
 
 // Core functionality routes
 const glucoseRoutes = require('./routes/glucoseRoutes');
