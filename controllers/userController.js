@@ -8,6 +8,7 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 // Register User
 exports.registerUser = async (req, res) => {
     try {
+        console.log("Received registration data:", req.body);
         const { firstName, lastName, dateOfBirth, email, password } = req.body;
 
         const salt = await bcrypt.genSalt(10);
@@ -18,7 +19,7 @@ exports.registerUser = async (req, res) => {
             lastName,
             dateOfBirth,
             email,
-            passwordHash: password
+            passwordHash: hashedPassword
         });
 
         const newUser = await user.save();
