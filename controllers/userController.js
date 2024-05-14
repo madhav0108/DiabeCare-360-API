@@ -29,7 +29,7 @@ exports.registerUser = async (req, res) => {
             { expiresIn: '1h' }
         );
         res.status(201).json({ token: token, message: 'User registered successfully' });
-        
+
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).json({ message: "Error registering user", error: error.message });
@@ -38,19 +38,29 @@ exports.registerUser = async (req, res) => {
 
 // Login User
 exports.loginUser = async (req, res) => {
+    console.log("Attempting to login with:", req.body);  // Log the incoming request body
+
     try {
         const user = await User.findOne({ email: req.body.email });
-        if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
+        if (!user) {
+            console.log("No user found with email:", req.body.email);
+            return res.status(401).send('Authentication failed: No such user');
+        }
+
+        if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
             const token = jwt.sign(
                 { userId: user._id },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
-            res.json({ token: token });
+            return res.json({ token: token });
         } else {
-            res.status(401).send('Authentication failed');
+            console.log("Password mismatch for user:", req.body.email);
+            return res.status(401).send('Authentication failed: Password mismatch');
         }
+
     } catch (error) {
+        console.error("Server error during login:", error);
         res.status(500).send('Server error');
     }
 };
