@@ -21,10 +21,8 @@ app.use(helmet());
 // const cors = require('cors');
 // app.use(cors());
 
-const authenticateToken = require('./middleware/authenticationToken'); // Adjust path as necessary
 const userRoutes = require('./routes/userRoutes');
-// Apply the authentication middleware to all routes under /api/user
-app.use('/api/user', authenticateToken, userRoutes);
+app.use('/api/user', userRoutes);
 
 // Core functionality routes
 const glucoseRoutes = require('./routes/glucoseRoutes');
