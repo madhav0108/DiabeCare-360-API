@@ -11,8 +11,10 @@ exports.registerUser = async (req, res) => {
         console.log("Received registration data:", req.body);
         const { firstName, lastName, dateOfBirth, email, password } = req.body;
 
+        console.log("Password before hashing:", password);
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        console.log("Hashed password:", hashedPassword);
 
         const user = new User({
             firstName,
@@ -23,6 +25,8 @@ exports.registerUser = async (req, res) => {
         });
 
         const newUser = await user.save();
+        console.log("User registered with hashed password:", user.passwordHash);
+
         const token = jwt.sign(
             { userId: newUser._id },
             process.env.JWT_SECRET,
@@ -42,6 +46,9 @@ exports.loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ email: req.body.email });
+        console.log("Retrieved user data:", user); // Log the user data
+        console.log("Password for comparison:", req.body.password);
+        console.log("Stored hash to compare with:", user.passwordHash);
         if (!user) {
             console.log("No user found with email:", req.body.email);
             return res.status(401).send('Authentication failed: No such user');
