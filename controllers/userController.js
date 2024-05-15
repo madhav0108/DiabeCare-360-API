@@ -5,9 +5,6 @@ const crypto = require('crypto'); // For generating password reset tokens
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-// Convert environment variable to integer as bcrypt expects a number
-const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS, 10);
-
 // Register User
 exports.registerUser = async (req, res) => {
     try {
@@ -15,15 +12,15 @@ exports.registerUser = async (req, res) => {
         const { firstName, lastName, dateOfBirth, email, password } = req.body;
 
         console.log("Password before hashing:", password);
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        console.log("Hashed password:", hashedPassword);
+        //const hashedPassword = await bcrypt.hash(password, saltRounds);
+        //console.log("Hashed password:", hashedPassword);
 
         const user = new User({
             firstName,
             lastName,
             dateOfBirth,
             email,
-            passwordHash: hashedPassword
+            passwordHash: password
         });
 
         const newUser = await user.save();
@@ -56,7 +53,8 @@ exports.loginUser = async (req, res) => {
             return res.status(401).send('Authentication failed: No such user');
         }
 
-        if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
+        const isPasswordCorrect = await user.checkPassword(req.body.password);
+        if (isPasswordCorrect) {
             const token = jwt.sign(
                 { userId: user._id },
                 process.env.JWT_SECRET,
