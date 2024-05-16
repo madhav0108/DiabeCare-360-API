@@ -38,7 +38,7 @@ exports.registerUser = async (req, res) => {
             lastName: user.lastName,
             email: user.email,
             dateOfBirth: user.dateOfBirth.toISOString().split('T')[0] // Format date as YYYY-MM-DD
-          }
+          },
           message: 'User registered successfully'
         });
 
