@@ -60,7 +60,15 @@ exports.loginUser = async (req, res) => {
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
-            return res.json({ token: token });
+            return res.json({
+              token: token,
+              user: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                dateOfBirth: user.dateOfBirth.toISOString().split('T')[0] // Format date as YYYY-MM-DD
+              }
+            });
         } else {
             console.log("Password mismatch for user:", req.body.email);
             return res.status(401).send('Authentication failed: Password mismatch');
