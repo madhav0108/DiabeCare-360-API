@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true }
 });
 
+// This ensures that whenever a user object is serialized to JSON, the _id field is included.
+userSchema.set('toJSON', {
+    virtuals: true
+});
+
 // Password hashing middleware before saving the user
 userSchema.pre('save', async function(next) {
   // Only hash the password if it has been modified (or is new)
