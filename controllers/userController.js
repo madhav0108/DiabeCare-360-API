@@ -31,7 +31,16 @@ exports.registerUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.status(201).json({ token: token, message: 'User registered successfully' });
+        res.status(201).json({
+          token: token,
+          user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            dateOfBirth: user.dateOfBirth.toISOString().split('T')[0] // Format date as YYYY-MM-DD
+          }
+          message: 'User registered successfully'
+        });
 
     } catch (error) {
         console.error("Registration error:", error);
