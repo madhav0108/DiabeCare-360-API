@@ -12,6 +12,9 @@ router.post('/login', userController.loginUser);
 // User logout
 router.post('/logout', authenticateToken, userController.logoutUser);
 
+// User details
+router.get('/userDetails', authenticateToken, userController.getUserDetails);
+
 // Password reset request
 router.post('/reset-password-request', userController.resetPassword);
 

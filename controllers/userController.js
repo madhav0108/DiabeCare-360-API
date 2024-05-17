@@ -91,6 +91,25 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+exports.getUserDetails = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found.' });
+        }
+        res.json({
+            userId: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            dateOfBirth: user.dateOfBirth.toISOString().split('T')[0] // Format date as YYYY-MM-DD
+        });
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+        res.status(500).send({ message: "Error fetching user details", error: error.message });
+    }
+};
+
 // Logout User (client-side handling)
 exports.logoutUser = (req, res) => {
     res.send("Log out by clearing the JWT on the client side.");
