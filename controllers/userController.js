@@ -169,7 +169,8 @@ exports.resetPassword = async (req, res) => {
 // Delete User
 exports.deleteUser = async (req, res) => {
     try {
-        const { userId } = req.body;
+        // Extract userId from the authenticated token, not from the body
+        const userId = req.user.userId;
         await User.findByIdAndDelete(userId);
         res.status(200).send({ message: 'User deleted successfully' });
     } catch (error) {
