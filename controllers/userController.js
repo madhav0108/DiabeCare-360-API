@@ -167,9 +167,9 @@ const sendResetEmail = async (email, link) => {
 
 // Reset Password
 exports.resetPassword = async (req, res) => {
-    console.log("Reset Password Token from request params:", req.query.token)
+    console.log("Reset Password Token from request params:", req.params.token)
     const user = await User.findOne({
-        resetPasswordToken: req.query.token,
+        resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() }
     });
 
