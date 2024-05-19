@@ -8,10 +8,9 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 // Register User
 exports.registerUser = async (req, res) => {
     try {
-        console.log("Received registration data:", req.body);
+        //console.log("Received registration data:", req.body);
         const { firstName, lastName, dateOfBirth, email, password } = req.body;
-
-        console.log("Password before hashing:", password);
+        //console.log("Password before hashing:", password);
         //const hashedPassword = await bcrypt.hash(password, saltRounds);
         //console.log("Hashed password:", hashedPassword);
 
@@ -22,9 +21,8 @@ exports.registerUser = async (req, res) => {
             email,
             passwordHash: password
         });
-
         const newUser = await user.save();
-        console.log("User registered with hashed password:", user.passwordHash);
+        //console.log("User registered with hashed password:", user.passwordHash);
 
         const token = jwt.sign(
             { userId: newUser._id },
@@ -56,8 +54,8 @@ exports.loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         console.log("Retrieved user data:", user); // Log the user data
-        console.log("Password for comparison:", req.body.password);
-        console.log("Stored hash to compare with:", user.passwordHash);
+        //console.log("Password for comparison:", req.body.password);
+        //console.log("Stored hash to compare with:", user.passwordHash);
         if (!user) {
             console.log("No user found with email:", req.body.email);
             return res.status(401).send('Authentication failed: No such user');
@@ -167,9 +165,11 @@ const sendResetEmail = async (email, link) => {
 
 // Reset Password
 exports.resetPassword = async (req, res) => {
-    console.log("Reset Password Token from request params:", req.query.token)
+    // Extracting token from URL path parameters
+    const { token } = req.params; // Assuming route is defined with /resetPassword/:token
+    console.log("Reset Password Token from request params:", token);
     const user = await User.findOne({
-        resetPasswordToken: req.query.token,
+        resetPasswordToken: token,
         resetPasswordExpires: { $gt: Date.now() }
     });
 
