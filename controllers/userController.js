@@ -131,7 +131,7 @@ exports.resetPasswordRequest = async (req, res) => {
     await user.save();
 
     // Construct the reset link
-    const resetLink = `https://diabecare360.com/reset/${resetToken}`;
+    const resetLink = `diabecare360://reset?token=${resetToken}`;
     console.log("Reset Link with token after user.save:", resetLink)
 
     // Send email with reset token
@@ -167,9 +167,9 @@ const sendResetEmail = async (email, link) => {
 
 // Reset Password
 exports.resetPassword = async (req, res) => {
-    console.log("Reset Password Token from request params:", req.params.token)
+    console.log("Reset Password Token from request params:", req.query.token)
     const user = await User.findOne({
-        resetPasswordToken: req.params.token,
+        resetPasswordToken: req.query.token,
         resetPasswordExpires: { $gt: Date.now() }
     });
 
