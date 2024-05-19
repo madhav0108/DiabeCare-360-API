@@ -126,11 +126,13 @@ exports.resetPasswordRequest = async (req, res) => {
     const resetToken = crypto.randomBytes(20).toString('hex');
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    console.log("Reset Password Token before user.save:", resetToken)
 
     await user.save();
 
     // Construct the reset link
     const resetLink = `https://diabecare360.com/reset/${resetToken}`;
+    console.log("Reset Link with token after user.save:", resetLink)
 
     // Send email with reset token
     try {
@@ -165,6 +167,7 @@ const sendResetEmail = async (email, link) => {
 
 // Reset Password
 exports.resetPassword = async (req, res) => {
+    console.log("Reset Password Token from request params:", req.params.token)
     const user = await User.findOne({
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() }
