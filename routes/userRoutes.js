@@ -19,7 +19,7 @@ router.get('/userDetails', authenticateToken, userController.getUserDetails);
 router.post('/reset-password-request', userController.resetPasswordRequest);
 
 // Password reset
-app.post('/resetPassword/:token', userController.resetPassword);
+router.post('/reset-password', userController.resetPassword);
 
 // User deletion
 router.delete('/delete', authenticateToken, userController.deleteUser);

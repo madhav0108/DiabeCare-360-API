@@ -9,9 +9,7 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
   email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  resetPasswordToken: { type: String }, // Token used for resetting password
-  resetPasswordExpires: { type: Date } // Expiry time of the reset token
+  passwordHash: { type: String, required: true }
 });
 
 // This ensures that whenever a user object is serialized to JSON, the _id field is included.
