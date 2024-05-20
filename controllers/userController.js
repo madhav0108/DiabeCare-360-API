@@ -177,13 +177,12 @@ exports.resetPassword = async (req, res) => {
         return res.status(400).send("Password reset token is invalid or has expired.");
     }
 
-    // Update the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    user.passwordHash = hashedPassword;
+    // Update the password, don't hash
+    user.passwordHash = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
+    // Updated password hashed by middleware pre-save
     await user.save();
     res.send("Your password has been updated.");
 };
