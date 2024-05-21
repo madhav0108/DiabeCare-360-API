@@ -131,7 +131,7 @@ exports.resetPasswordRequest = async (req, res) => {
     await user.save();
 
     // Construct the reset link
-    const resetLink = `diabecare360://reset?token=${resetToken}`;
+    const resetLink = `https://www.diabecare360.com/reset-password?token=${resetToken}`;
     console.log("Reset Link with token after user.save:", resetLink)
 
     // Send email with reset token
