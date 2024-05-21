@@ -110,6 +110,22 @@ exports.getUserDetails = async (req, res) => {
     }
 };
 
+exports.checkIfUserExists = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const user = await User.findOne({ email: email });
+
+        if (user) {
+            return res.status(200).send({ message: 'User exists' });
+        } else {
+            return res.status(404).send({ message: 'User does not exist' });
+        }
+    } catch (error) {
+        console.error("Error checking if user exists:", error);
+        res.status(500).send({ message: "Error checking if user exists", error: error.message });
+    }
+};
+
 // Logout User (client-side handling)
 exports.logoutUser = (req, res) => {
     res.send("Log out by clearing the JWT on the client side.");

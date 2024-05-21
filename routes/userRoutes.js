@@ -15,6 +15,9 @@ router.post('/logout', authenticateToken, userController.logoutUser);
 // User details
 router.get('/userDetails', authenticateToken, userController.getUserDetails);
 
+// Check if user exists
+router.post('/check-user-exists', userController.checkIfUserExists);
+
 // Password reset request
 router.post('/reset-password-request', userController.resetPasswordRequest);
 
