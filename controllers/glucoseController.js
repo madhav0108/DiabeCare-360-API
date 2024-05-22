@@ -23,7 +23,7 @@ exports.getAllGlucose = async (req, res) => {
     try {
         const glucoseData = await Glucose.find({ userId: req.user.userId }); // Fetch data for the authenticated user
         const formattedData = glucoseData.map(g => ({
-            id: g._id,  // MongoDB generated id
+            id: g._id.toString(),  // Convert ObjectId to string
             userId: g.userId,  // Include userId
             level: g.level,
             date: g.date.toISOString()
