@@ -23,6 +23,7 @@ exports.getAllGlucose = async (req, res) => {
     try {
         const glucoseData = await Glucose.find({ userId: req.user.userId }); // Fetch data for the authenticated user
         const formattedData = glucoseData.map(g => ({
+            id: g._id,  // MongoDB generated id
             userId: g.userId,  // Include userId
             level: g.level,
             date: g.date.toISOString()
@@ -38,7 +39,12 @@ exports.getGlucoseById = async (req, res) => {
     try {
         const glucose = await Glucose.findOne({ _id: req.params.id, userId: req.user.userId });
         if (glucose) {
-            res.status(200).json([glucose]); // Wrap in an array
+            res.status(200).json([{
+                id: glucose._id,
+                userId: glucose.userId,
+                level: glucose.level,
+                date: glucose.date.toISOString()
+            }]);  // Wrap in an array
         } else {
             res.status(404).json([]);
         }
