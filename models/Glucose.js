@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const glucoseSchema = new mongoose.Schema({
-    id: { type: String, required: true },  // Using String to store UUID
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // Reference to the User model
     level: { type: Number, required: true },
     date: { type: Date, default: Date.now }
 });
