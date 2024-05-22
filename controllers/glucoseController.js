@@ -2,9 +2,12 @@
 const Glucose = require('../models/Glucose');
 
 exports.createGlucose = async (req, res) => {
+    console.log("Received createGlucose request with body:", req.body);  // Log the request body
+    console.log("Authenticated user:", req.user);  // Log the authenticated user
+
     try {
         const glucose = new Glucose({
-            userId: req.user._id,  // Link glucose entry to the authenticated user
+            userId: req.user.userId,  // Link glucose entry to the authenticated user
             level: req.body.level,
             date: new Date(req.body.date)  // Ensure date is converted to Date object
         });
@@ -18,8 +21,9 @@ exports.createGlucose = async (req, res) => {
 
 exports.getAllGlucose = async (req, res) => {
     try {
-        const glucoseData = await Glucose.find({ userId: req.user._id }); // Fetch data for the authenticated user
+        const glucoseData = await Glucose.find({ userId: req.user.userId }); // Fetch data for the authenticated user
         const formattedData = glucoseData.map(g => ({
+            userId: g.userId,  // Include userId
             level: g.level,
             date: g.date.toISOString()
         }));
@@ -32,7 +36,7 @@ exports.getAllGlucose = async (req, res) => {
 
 exports.getGlucoseById = async (req, res) => {
     try {
-        const glucose = await Glucose.findOne({ _id: req.params.id, userId: req.user._id });  // Ensure the glucose entry belongs to the authenticated user
+        const glucose = await Glucose.findOne({ _id: req.params.id, userId: req.user.userId });
         if (glucose) {
             res.status(200).json([glucose]); // Wrap in an array
         } else {
@@ -47,7 +51,7 @@ exports.getGlucoseById = async (req, res) => {
 exports.updateGlucose = async (req, res) => {
     try {
         const updatedGlucose = await Glucose.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user._id },  // Ensure the glucose entry belongs to the authenticated user
+            { _id: req.params.id, userId: req.user.userId },
             { $set: { level: req.body.level, date: new Date(req.body.date) } },
             { new: true }
         );
@@ -60,7 +64,7 @@ exports.updateGlucose = async (req, res) => {
 
 exports.deleteGlucose = async (req, res) => {
     try {
-        const deletedGlucose = await Glucose.findOneAndDelete({ _id: req.params.id, userId: req.user._id });  // Ensure the glucose entry belongs to the authenticated user
+        const deletedGlucose = await Glucose.findOneAndDelete({ _id: req.params.id, userId: req.user.userId });
         res.status(200).json([deletedGlucose]); // Wrap in an array
     } catch (error) {
       console.error("Error in deleteGlucose:", error);  // Log the error
