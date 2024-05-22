@@ -37,7 +37,9 @@ exports.getAllGlucose = async (req, res) => {
 
 exports.getGlucoseById = async (req, res) => {
     try {
-        const glucose = await Glucose.findOne({ _id: req.params.id, userId: req.user.userId });
+        // Convert the string ID to a MongoDB ObjectId
+        const objectId = mongoose.Types.ObjectId(req.params.id);
+        const glucose = await Glucose.findOne({ _id: objectId, userId: req.user.userId });
         if (glucose) {
             res.status(200).json([{
                 id: glucose._id,
@@ -56,8 +58,10 @@ exports.getGlucoseById = async (req, res) => {
 
 exports.updateGlucose = async (req, res) => {
     try {
+        // Convert the string ID to a MongoDB ObjectId
+        const objectId = mongoose.Types.ObjectId(req.params.id);
         const updatedGlucose = await Glucose.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.userId },
+            { _id: objectId, userId: req.user.userId },
             { $set: { level: req.body.level, date: new Date(req.body.date) } },
             { new: true }
         );
@@ -70,7 +74,9 @@ exports.updateGlucose = async (req, res) => {
 
 exports.deleteGlucose = async (req, res) => {
     try {
-        const deletedGlucose = await Glucose.findOneAndDelete({ _id: req.params.id, userId: req.user.userId });
+        // Convert the string ID to a MongoDB ObjectId
+        const objectId = mongoose.Types.ObjectId(req.params.id);
+        const deletedGlucose = await Glucose.findOneAndDelete({ _id: objectId, userId: req.user.userId });
         res.status(200).json([deletedGlucose]); // Wrap in an array
     } catch (error) {
       console.error("Error in deleteGlucose:", error);  // Log the error
