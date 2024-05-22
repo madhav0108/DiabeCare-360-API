@@ -11,6 +11,7 @@ exports.createGlucose = async (req, res) => {
         const savedGlucose = await glucose.save();
         res.status(201).json([savedGlucose]); // Wrap in an array
     } catch (error) {
+        console.error("Error in createGlucose:", error);  // Log the error
         res.status(400).json({ message: "Failed to create glucose data", error: error.message });
     }
 };
@@ -24,6 +25,7 @@ exports.getAllGlucose = async (req, res) => {
         }));
         res.status(200).json(formattedData);  // Send formatted data
     } catch (error) {
+      console.error("Error in getAllGlucose:", error);  // Log the error
         res.status(400).json({ message: "Failed to get glucose data", error: error.message });
     }
 };
@@ -37,6 +39,7 @@ exports.getGlucoseById = async (req, res) => {
             res.status(404).json([]);
         }
     } catch (error) {
+      console.error("Error in getGlucoseById:", error);  // Log the error
         res.status(400).json({ message: "Error finding glucose data", error: error.message });
     }
 };
@@ -50,6 +53,7 @@ exports.updateGlucose = async (req, res) => {
         );
         res.status(200).json([updatedGlucose]); // Wrap in an array
     } catch (error) {
+      console.error("Error in updateGlucose:", error);  // Log the error
         res.status(400).json({ message: "Failed to update glucose data", error: error.message });
     }
 };
@@ -59,6 +63,7 @@ exports.deleteGlucose = async (req, res) => {
         const deletedGlucose = await Glucose.findOneAndDelete({ _id: req.params.id, userId: req.user._id });  // Ensure the glucose entry belongs to the authenticated user
         res.status(200).json([deletedGlucose]); // Wrap in an array
     } catch (error) {
+      console.error("Error in deleteGlucose:", error);  // Log the error
         res.status(400).json({ message: "Failed to delete glucose data", error: error.message });
     }
 };
