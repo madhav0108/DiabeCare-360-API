@@ -78,7 +78,7 @@ exports.updateDietary = async (req, res) => {
             { new: true }
         );
         res.status(200).json([updatedDietary]); // Wrap in an array
-    } catch (error)
+    } catch (error) {
         console.error("Error in updateDietary:", error);  // Log the error
         res.status(400).json({ message: "Failed to update dietary data", error: error.message });
     }
