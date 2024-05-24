@@ -40,7 +40,7 @@ exports.getAllActivities = async (req, res) => {
 };
 
 exports.getActivityById = async (req, res) => {
-    try
+    try {
         // Convert the string ID to a MongoDB ObjectId
         const objectId = mongoose.Types.ObjectId(req.params.id);
         const activity = await Activity.findOne({ _id: objectId, userId: req.user.userId });
