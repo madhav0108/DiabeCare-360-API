@@ -2,7 +2,7 @@
 const Dietary = require('../models/Dietary');
 
 exports.createDietary = async (req, res) => {
-    console.log("Received createGlucose request with body:", req.body);  // Log the request body
+    console.log("Received createDietary request with body:", req.body);  // Log the request body
     console.log("Authenticated user:", req.user);  // Log the authenticated user
 
     try {
