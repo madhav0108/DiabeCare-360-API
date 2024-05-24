@@ -1,8 +1,9 @@
 // models/Dietary.js
 const mongoose = require('mongoose');
+const { Schema } = mongoose; // Import Schema
 
-const dietarySchema = new mongoose.Schema({
-    id: { type: String, required: true },  // Using String to store UUID
+const dietarySchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // Reference to the User model
     name: { type: String, required: true },
     calories: { type: Number, required: true },
     carbs: { type: Number, required: true },
@@ -11,4 +12,5 @@ const dietarySchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Dietary', dietarySchema, 'dietary');
+const Dietary = mongoose.model('Dietary', dietarySchema, 'dietary');
+module.exports Dietary;
