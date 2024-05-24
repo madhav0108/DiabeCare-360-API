@@ -1,4 +1,5 @@
 // controllers/glucoseController.js
+const mongoose = require('mongoose'); // Add this line to import mongoose
 const Glucose = require('../models/Glucose');
 
 exports.createGlucose = async (req, res) => {

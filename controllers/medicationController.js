@@ -1,4 +1,5 @@
 // controllers/medicationController.js
+const mongoose = require('mongoose'); // Add this line to import mongoose
 const Medication = require('../models/Medication');
 
 exports.createMedication = async (req, res) => {

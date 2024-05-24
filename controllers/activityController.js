@@ -1,4 +1,5 @@
 // controllers/activityController.js
+const mongoose = require('mongoose'); // Add this line to import mongoose
 const Activity = require('../models/Activity');
 
 exports.createActivity = async (req, res) => {

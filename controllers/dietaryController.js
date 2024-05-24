@@ -1,4 +1,5 @@
 // controllers/dietaryController.js
+const mongoose = require('mongoose'); // Add this line to import mongoose
 const Dietary = require('../models/Dietary');
 
 exports.createDietary = async (req, res) => {
