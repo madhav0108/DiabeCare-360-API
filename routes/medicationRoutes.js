@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const medicationController = require('../controllers/medicationController');
+const authenticateToken = require('../middleware/authenticationToken');
 
-router.post('/', medicationController.createMedication);
-router.get('/', medicationController.getAllMedications);
-router.get('/:id', medicationController.getMedicationById);
-router.put('/:id', medicationController.updateMedication);
-router.delete('/:id', medicationController.deleteMedication);
+router.post('/', authenticateToken, medicationController.createMedication);
+router.get('/', authenticateToken, medicationController.getAllMedications);
+router.get('/:id', authenticateToken, medicationController.getMedicationById);
+router.put('/:id', authenticateToken, medicationController.updateMedication);
+router.delete('/:id', authenticateToken, medicationController.deleteMedication);
 
 module.exports = router;
