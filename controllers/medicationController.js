@@ -7,7 +7,7 @@ exports.createMedication = async (req, res) => {
 
     try {
         const medication = new Medication({
-            userId: req.body.userId,  // Link glucose entry to the authenticated user
+            userId: req.user.userId,  // Link glucose entry to the authenticated user
             name: req.body.name,
             dose: req.body.dose,
             frequency: req.body.frequency,

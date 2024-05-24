@@ -7,7 +7,7 @@ exports.createActivity = async (req, res) => {
 
     try {
         const activity = new Activity({
-            userId: req.body.userId,  // Link glucose entry to the authenticated user
+            userId: req.user.userId,  // Link glucose entry to the authenticated user
             type: req.body.type,
             duration: req.body.duration,
             caloriesBurned: req.body.caloriesBurned,
